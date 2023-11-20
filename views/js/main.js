@@ -50,8 +50,8 @@ const load = () => {
 
     socket.on('add mess', function (data) {
         const some = $('.some')
-        some.before("<a class='user_mess'>" + data.name + "</a>");
-        some.before("<p class='some_p'>" + data.mess + "</p>")
+        some.before(`<a class='user_mess' href='/profile?login=${data.name}'>${data.name}</a>`);
+        some.before(`<p class='some_p'>${data.mess}</p>`)
 
         if(data.count + 1 < 11) {
             document.body.style.overflow = 'hidden'

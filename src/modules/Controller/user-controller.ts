@@ -56,12 +56,14 @@ export class UserController {
             }
             const user: QueryResult = await db.query('SELECT * FROM users WHERE name = $1', [req.query.login])
 
+            if (user.rowCount === 0) return res.redirect(url)
+
             if (req.query.login === req.cookies.name) {
-                res.render(path.join('pages', 'profile.ejs'), {name: req.query.login, row: user.rows})
+                res.render(path.join('pages', 'profile.ejs'), {name: req.query.login, row: user.rows[0]})
             }
 
             else {
-                res.render(path.join('pages', 'profile_guest.ejs'), {name: req.cookies.name, row: user.rows})
+                res.render(path.join('pages', 'profile_guest.ejs'), {name: req.cookies.name, row: user.rows[0]})
             }
         } catch (error) {
             console.log(error)
