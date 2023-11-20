@@ -1,3 +1,3 @@
-const url = 'http://localhost:3000/'
+const url: string = String(process.env.URL)
 
 export {url}
