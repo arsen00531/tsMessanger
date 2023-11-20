@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import path from "path";
 import { QueryResult } from "pg";
-import fs from 'fs'
 import { db } from "../db.js";
+import { url } from "../hostURL.js";
 
 export class UserController {
     async main(req: Request, res: Response) {
@@ -82,11 +82,11 @@ export class UserController {
     async imageChange(req: Request, res: Response) {
         try {
             if (req?.file === undefined) {
-                return res.redirect(`http://localhost:3000/profile?login=${req.cookies.name}`)
+                return res.redirect(`${url}profile?login=${req.cookies.name}`)
             }
 
             await db.query('UPDATE users SET image = $1 WHERE name = $2', [req?.file?.filename, req.cookies.name])
-            res.redirect(`http://localhost:3000/profile?login=${req.cookies.name}`)
+            res.redirect(`${url}profile?login=${req.cookies.name}`)
             
         } catch (error) {
             console.log(error)
