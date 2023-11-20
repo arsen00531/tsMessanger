@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "npx nodemon",
-    "build": "npx tsc",
+    "build": "rimraf ./build && npx tsc",
     "start": "npm run build && node build/main"
   },
   "keywords": [],
