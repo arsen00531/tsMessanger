@@ -57,7 +57,6 @@
         			<div class="users">
         				<div class="flex" style="display: flex;">
         					<% for(let i = 0; i < row.length;i++) { %>
-                                <% if (row[i].name != name) { %>
                                 <div class="user_div">
                                     <a href="/profile?login=<%= row[i].name %>">
                                         <img src="../user_images/<%= row[i].image %>" class="user_img" alt="image">
@@ -73,8 +72,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                <% } %>
-                            <%} %>
+                            <% } %>
         				</div>
         			</div>
         		</div>

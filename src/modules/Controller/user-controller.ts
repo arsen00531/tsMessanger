@@ -3,6 +3,7 @@ import path from "path";
 import { QueryResult } from "pg";
 import { db } from "../db.js";
 import { url } from "../hostURL.js";
+import fs from "fs";
 
 export class UserController {
     async main(req: Request, res: Response) {
@@ -32,9 +33,16 @@ export class UserController {
             if (!req.cookies.name) {
                 return res.render(path.join('pages', 'unlogged.ejs'), {error: undefined})
             }
-            const users: QueryResult = await db.query('SELECT * FROM users')
+            const users: QueryResult = await db.query('SELECT * FROM users WHERE name != $1', [req.cookies.name])
+            
+            const newUsers = users.rows.map(user => {
+                if (!fs.existsSync(path.join('views', 'user_images', user.image))) {
+                    user.image = 'camera.png'
+                }
+                return user
+            })
 
-            res.render(path.join('pages', 'users.ejs'), {row: users.rows, name: req.cookies.name})
+            res.render(path.join('pages', 'users.ejs'), {row: newUsers, name: req.cookies.name})
         } catch (error) {
             console.log(error)
             throw new Error('Oops Error')
