@@ -173,6 +173,7 @@ header .container .row>* {
 .user_img {
 	max-width: 200px;
 	height: 200px;
+	object-fit: contain;
 }
 
 .log-in {
