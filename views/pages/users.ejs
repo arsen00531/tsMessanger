@@ -101,6 +101,7 @@
 
             socket.on('enter', connectionCount => {
                 names.forEach((name, key) => {
+                    name = name.textContent.trim()
                     if (Object.keys(connectionCount).includes(name)) {
                         marker[key].classList.add('online')
                     }
