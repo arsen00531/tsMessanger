@@ -1,25 +1,29 @@
 import { Server, Socket } from 'socket.io';
 import { db } from './db.js';
 import { QueryResult } from 'pg';
+import { Object } from '../types/object.js';
 
 const socket = (io: Server): void => {
-    let connectionCount: number = 0
+    let connectionCount: Object = {}
 
     io.sockets.on('connection', (socket: Socket): void => {
         let name: string = ''
 
-        connectionCount += 1
-        socket.emit('enter', connectionCount)
         socket.handshake.headers.cookie?.trim().split(';').forEach(cookie => {
             const cookieSplit: string[] = cookie.split('=')
             if (cookieSplit[0].trim() === 'name') name = cookieSplit[1]
         })
 
+        connectionCount[name] = 'online'
+        console.log(Object.keys(connectionCount).length);
+        console.log(connectionCount);
+
+        socket.emit('enter', connectionCount)
+
         db.query("UPDATE users SET active = 'online' WHERE name = $1", [name])
-        console.log(name)
 
         socket.on('disconnect', (): void => {
-            connectionCount -= 1
+            delete connectionCount[name]
             db.query("UPDATE users SET active = 'offline' WHERE name = $1", [name])
         });
 

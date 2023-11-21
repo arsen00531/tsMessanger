@@ -16,6 +16,15 @@ const load = () => {
 
     if (name !== htmlName) window.location.replace('http://localhost:3000/')
 
+    socket.on('enter', connectionCountServer => {
+        if (Object.keys(connectionCountServer).includes(guest)) {
+            connectionCount.textContent = 'Online'
+        }
+        else {
+            connectionCount.textContent = 'Offline'
+        }
+    })
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 

@@ -56,16 +56,19 @@
         		<div class="row">
         			<div class="users">
         				<div class="flex" style="display: flex;">
-        					<% for(let i = 0; i < row.length;i++) { %>
+        					<% for(let i = 0; i < row.length; i++) { %>
                                 <div class="user_div">
                                     <a href="/profile?login=<%= row[i].name %>">
-                                        <div class="<%= row[i].active || 'offline' %>"></div>
+                                        <div class="marker"></div>
                                         <img src="../user_images/<%= row[i].image %>" class="user_img" alt="image">
                                     </a>
                                     <div class="div_flex">
-                                        <a href='/profile?login=<%= row[i].name %>&img=<%= row[i].image %>' class='link'>
-                                            <p class='user_p'><%= row[i].name %>
-                                            
+                                        <a
+                                            href='/profile?login=<%= row[i].name %>' 
+                                            class='link'
+                                        >
+                                            <p class='user_p'>
+                                                <%= row[i].name %>
                                             </p>
                                         </a>
                                         <a href='/chat?id=<%= row[i].name %>' class='user_link'>
@@ -85,6 +88,25 @@
     <script type="text/javascript">
         $(document).ready(function () {
             const socket = io();
+            const usersMain = document.querySelectorAll('.user_div')
+            const names = document.querySelectorAll('.user_p')
+            const marker = document.querySelectorAll('.marker')
+
+            // usersMain.forEach(user => {
+            //     const name = user.children[1].children[0].children[0].textContent.trim()
+            //     if (Object.keys(connectionCountServer).includes(name)) {
+            //         user.children[0].children[0]
+            //     }
+            // })
+
+            socket.on('enter', connectionCount => {
+                names.forEach((name, key) => {
+                    if (Object.keys(connectionCount).includes(name)) {
+                        marker[key].classList.add('online')
+                    }
+                })
+            })
+
             $(".account_not_log").on("click", function (e) {
                 e.preventDefault()
                 let reg_and_log = $(".reg_and_log")

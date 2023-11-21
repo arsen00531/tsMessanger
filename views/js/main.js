@@ -7,7 +7,7 @@ const load = () => {
     const connections = document.querySelector('.connectionCount span')
 
     socket.on('enter', connectionCount => {
-        connections.textContent = String(connectionCount)
+        connections.textContent = String(Object.keys(connectionCount).length)
     })
 
     const keyDownUp = () => {
