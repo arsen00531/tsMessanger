@@ -59,6 +59,7 @@
         					<% for(let i = 0; i < row.length;i++) { %>
                                 <div class="user_div">
                                     <a href="/profile?login=<%= row[i].name %>">
+                                        <div class="<%= row[i].active || 'offline' %>"></div>
                                         <img src="../user_images/<%= row[i].image %>" class="user_img" alt="image">
                                     </a>
                                     <div class="div_flex">

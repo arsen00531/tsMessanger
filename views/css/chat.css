@@ -47,6 +47,18 @@
 	margin-left: 15px;
 	max-width: 200px;
 }
+.user_div a {
+	position: relative;
+}
+.user_div a div.online {
+	position: absolute;
+	right: 7px;
+	bottom: -85px;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: rgb(21, 206, 21);
+}
 .div_flex {
 	display: flex;
 	justify-content: space-between;

@@ -277,6 +277,14 @@ a {
 	text-decoration: none !important;
 }
 
+.connectionCount {
+	position: absolute;
+	right: 25px;
+	top: 6px;
+	z-index: 50;
+	color: gray;
+}
+
 @media (max-width: 1670px) {
 	.reg_and_log {
 		right: 51%

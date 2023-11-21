@@ -6,6 +6,7 @@ const load = () => {
         address = new URL(window.location),
         guest = address.searchParams.get('id'),
         cookies = document.cookie.split(";"),
+        connectionCount = document.querySelector('.connectionCount')
         htmlName = document.querySelector('.pska2').textContent.replace(/\n/g, '').trim()
     let name = ''
 
@@ -15,7 +16,7 @@ const load = () => {
 
     if (name !== htmlName) window.location.replace('http://localhost:3000/')
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
 
         if(name === "" || textarea.value === "") return;
@@ -37,7 +38,7 @@ const load = () => {
     textarea.addEventListener('keyup', keyDownUp)
     textarea.addEventListener('keydown', keyDownUp)
 
-    document.querySelector('.account_not_log').addEventListener("click", function (e) {
+    document.querySelector('.account_not_log').addEventListener("click", (e) => {
         e.preventDefault()
         const regLog = document.querySelector('.reg_and_log')
 
@@ -45,7 +46,7 @@ const load = () => {
         else regLog.classList.add('clicked')
     })
 
-    socket.on('give', function(data) {
+    socket.on('give', (data) => {
         const {name, text, count} = data
         const some = $('.some')
 

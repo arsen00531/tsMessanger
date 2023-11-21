@@ -1,20 +1,14 @@
 const load = () => {
     const submit = document.querySelector(".submit")
-    const login = document.querySelector('.pska2').textContent
+    const login = document.querySelector('.pska2').textContent.trim()
     const socket = io();
     const form = document.querySelector('#mess-form');
     const textarea = document.querySelector('#message');
+    const connections = document.querySelector('.connectionCount span')
 
-    document.addEventListener("keyup", function (e) {
-        if(textarea.value === "") return;
-        e.preventDefault();
-      
-        if(e.keyCode === 13) {
-            e.preventDefault();
-            socket.emit('send mess', {mess: textarea.value, name: login});
-            textarea.value = '';
-        }
-    });
+    socket.on('enter', connectionCount => {
+        connections.textContent = String(connectionCount)
+    })
 
     const keyDownUp = () => {
         if(textarea.value === "") {
@@ -29,7 +23,7 @@ const load = () => {
     textarea.addEventListener('keyup', keyDownUp)
     textarea.addEventListener('keydown', keyDownUp)
 
-    document.querySelector('.account_not_log').addEventListener("click", function (e) {
+    document.querySelector('.account_not_log').addEventListener("click", (e) => {
         e.preventDefault()
         const regLog = document.querySelector('.reg_and_log')
 
@@ -37,7 +31,7 @@ const load = () => {
         else regLog.classList.add('clicked')
     })
 
-    form.addEventListener('submit', function (event) {
+    form.addEventListener('submit',  (event) => {
         event.preventDefault();
 
         if(textarea.value === "") return
@@ -45,10 +39,12 @@ const load = () => {
         if(login === "" || textarea.value === "") return;
 
         socket.emit('send mess', {mess: textarea.value, name: login});
+        socket.emit('count')
+
         textarea.value = '';        
     });
 
-    socket.on('add mess', function (data) {
+    socket.on('add mess',  (data) => {
         const some = $('.some')
         some.before(`<a class='user_mess' href='/profile?login=${data.name}'>${data.name}</a>`);
         some.before(`<p class='some_p'>${data.mess}</p>`)

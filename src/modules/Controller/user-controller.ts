@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
 import path from "path";
 import { QueryResult } from "pg";
 import { db } from "../db.js";
@@ -76,12 +76,12 @@ export class UserController {
             if (!req.cookies.name) {
                 return res.render(path.join('pages', 'unlogged.ejs'), {error: undefined})
             }
-            const name = req.cookies.name
+            const name: CookieOptions = req.cookies.name
             const guest = req.query.id
-            const query = 'SELECT * from anonimeChat WHERE name = $1 AND guest = $2 OR name = $3 AND guest = $4'
-            const rows = await db.query(query, [name, guest, guest, name])
+            const query: string = 'SELECT * from anonimeChat WHERE name = $1 AND guest = $2 OR name = $3 AND guest = $4'
+            const chat = await db.query(query, [name, guest, guest, name])
     
-            res.render(path.join('pages', 'anonim.ejs'), {myName: req.cookies.name, row: rows.rows})
+            res.render(path.join('pages', 'anonim.ejs'), {myName: req.cookies.name, row: chat.rows})
             
         } catch (error) {
             console.log(error)
