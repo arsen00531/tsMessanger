@@ -15,7 +15,6 @@ const socket = (io: Server): void => {
         })
 
         connectionCount[name] = 'online'
-        console.log(Object.keys(connectionCount).length);
         console.log(connectionCount);
 
         socket.emit('enter', connectionCount)

@@ -92,13 +92,6 @@
             const names = document.querySelectorAll('.user_p')
             const marker = document.querySelectorAll('.marker')
 
-            // usersMain.forEach(user => {
-            //     const name = user.children[1].children[0].children[0].textContent.trim()
-            //     if (Object.keys(connectionCountServer).includes(name)) {
-            //         user.children[0].children[0]
-            //     }
-            // })
-
             socket.on('enter', connectionCount => {
                 names.forEach((name, key) => {
                     name = name.textContent.trim()

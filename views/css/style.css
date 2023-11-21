@@ -563,6 +563,12 @@ a {
 	.user_mess {
 		right: 30px
 	}
+	.page {
+		font-size: 18px;
+		left: auto;
+		right: 11px;
+		top: -2px;
+	}
 }
 @media (max-width: 400px) {
 	.reg_and_log {
