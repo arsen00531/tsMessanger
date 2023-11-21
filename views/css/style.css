@@ -569,6 +569,10 @@ a {
 		right: 11px;
 		top: -2px;
 	}
+	.flex {
+		justify-content: center !important;
+		margin-left: 0
+	}
 }
 @media (max-width: 400px) {
 	.reg_and_log {
@@ -579,22 +583,12 @@ a {
 		width: 25% !important
 	}
 	.users {
-		margin: auto;
-		margin-top: 10% !important;
-		max-width: 241px !important;
-	}
-	.user_div {
-		margin-left: 0
-	}
-}
-@media (max-width: 382px) {
-	.users {
 		margin-top: 14% !important; 
 		background-color: #fff; 
 		max-width: 85% !important;
 	}
-	.flex {
-		justify-content: center !important;
+	
+	.user_div {
 		margin-left: 0
 	}
 }
