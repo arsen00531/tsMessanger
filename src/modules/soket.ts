@@ -19,11 +19,8 @@ const socket = (io: Server): void => {
 
         socket.emit('enter', connectionCount)
 
-        db.query("UPDATE users SET active = 'online' WHERE name = $1", [name])
-
         socket.on('disconnect', (): void => {
             delete connectionCount[name]
-            db.query("UPDATE users SET active = 'offline' WHERE name = $1", [name])
         });
 
         socket.on('count', (): boolean => socket.emit('enter', connectionCount))
