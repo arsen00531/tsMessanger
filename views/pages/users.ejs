@@ -81,9 +81,10 @@
         </main>
 	</div>
 	
-
-    <script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
         $(document).ready(function () {
+            const socket = io();
             $(".account_not_log").on("click", function (e) {
                 e.preventDefault()
                 let reg_and_log = $(".reg_and_log")
