@@ -48,14 +48,6 @@ const load = () => {
     textarea.addEventListener('keyup', keyDownUp)
     textarea.addEventListener('keydown', keyDownUp)
 
-    document.querySelector('.account_not_log').addEventListener("click", (e) => {
-        e.preventDefault()
-        const regLog = document.querySelector('.reg_and_log')
-
-        if (regLog.classList.length === 2) regLog.classList.remove('clicked')
-        else regLog.classList.add('clicked')
-    })
-
     socket.on('give', ({name, text}) => {
         const count = document.querySelectorAll('.user_mess').length + 2
         const some = document.querySelector('.some')
