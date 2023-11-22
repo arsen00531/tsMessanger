@@ -5,6 +5,7 @@ const load = () => {
     const form = document.querySelector('#mess-form');
     const textarea = document.querySelector('#message');
     const connections = document.querySelector('.connectionCount span')
+    const messagesWrapper = document.querySelector('.all_mess')
 
     socket.on('enter', connectionCount => {
         connections.textContent = String(Object.keys(connectionCount).length)
@@ -38,33 +39,44 @@ const load = () => {
 
         if(login === "" || textarea.value === "") return;
 
-        socket.emit('send mess', {mess: textarea.value, name: login});
+        socket.emit('send mess', {text: textarea.value, name: login});
         socket.emit('count')
 
         textarea.value = '';        
     });
 
-    socket.on('add mess',  (data) => {
-        const some = $('.some')
-        some.before(`<a class='user_mess' href='/profile?login=${data.name}'>${data.name}</a>`);
-        some.before(`<p class='some_p'>${data.mess}</p>`)
+    socket.on('add mess',  ({name, text}) => {
+        const count = document.querySelectorAll('.user_mess').length + 1
+        const some = document.querySelector('.some')
+        const link = document.createElement('a')
+        const paragraf = document.createElement('p')
 
-        if(data.count + 1 < 11) {
+        link.classList.add('user_mess')
+        link.href = `/profile?login=${name}`
+        link.textContent = name
+
+        paragraf.classList.add('some_p')
+        paragraf.textContent = text
+
+        messagesWrapper.insertBefore(link, some)
+        messagesWrapper.insertBefore(paragraf, some)
+
+        if(count + 1 < 11) {
             document.body.style.overflow = 'hidden'
             window.scrollTo(0, document.body.scrollHeight)
+        }
+
+        else if (count + 1 === 1) {
+            document.body.style.overflow = 'hidden'
+            const wind = document.body.scrollHeight
+            window.scrollTo(0, wind)
+            document.querySelector('.messages').style.bottom = '20%'
         }
       
         else {
             window.scrollTo(0, document.body.scrollHeight)
             document.querySelector('.messages').style.bottom = '85%'
             document.body.style.overflow = 'auto'
-        }
-
-        if(data.count + 1 === 1) {
-            document.body.style.overflow = 'hidden'
-            const wind = document.body.scrollHeight
-            window.scrollTo(0, wind)
-            document.querySelector('.messages').style.bottom = '20%'
         }
     });
 }

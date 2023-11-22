@@ -6,7 +6,8 @@ const load = () => {
         address = new URL(window.location),
         guest = address.searchParams.get('id'),
         cookies = document.cookie.split(";"),
-        connectionCount = document.querySelector('.connectionCount')
+        connectionCount = document.querySelector('.connectionCount'),
+        messagesWrapper = document.querySelector('.all_mess'),
         htmlName = document.querySelector('.pska2').textContent.replace(/\n/g, '').trim()
     let name = ''
 
@@ -55,17 +56,27 @@ const load = () => {
         else regLog.classList.add('clicked')
     })
 
-    socket.on('give', (data) => {
-        const {name, text, count} = data
-        const some = $('.some')
+    socket.on('give', ({name, text}) => {
+        const count = document.querySelectorAll('.user_mess').length + 2
+        const some = document.querySelector('.some')
+        const link = document.createElement('a')
+        const paragraf = document.createElement('p')
 
-        some.before(`<a class='user_mess'>${name}</a>`);
-        some.before(`<p class='some_p'>${text}</p>`)
+        link.classList.add('user_mess')
+        link.href = `/profile?login=${name}`
+        link.textContent = name
+
+        paragraf.classList.add('some_p')
+        paragraf.textContent = text
+
+        messagesWrapper.insertBefore(link, some)
+        messagesWrapper.insertBefore(paragraf, some)
 
         if(count < 11) {
             document.body.style.overflow = 'hidden'
             window.scrollTo(0, document.body.scrollHeight)
         }
+
         else if (count === 1) {
             document.body.style.overflow = 'hidden'
             window.scrollTo(0, document.body.scrollHeight)

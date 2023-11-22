@@ -80,7 +80,7 @@
     </main>
     <script>
         const load = () => {
-            document.querySelector('.account_not_log').addEventListener("click", function (e) {
+            document.querySelector('.account_not_log').addEventListener("click", (e) => {
                 e.preventDefault()
                 const regLog = document.querySelector('.reg_and_log')
 
@@ -90,6 +90,6 @@
         }
 
         window.addEventListener('load', load)
-</script>
+    </script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 import { Server, Socket } from 'socket.io';
 import { db } from './db.js';
-import { QueryResult } from 'pg';
 import { Object } from '../types/object.js';
 
 const socket = (io: Server): void => {
@@ -15,7 +14,6 @@ const socket = (io: Server): void => {
         })
 
         connectionCount[name] = 'online'
-        console.log(connectionCount);
 
         socket.emit('enter', connectionCount)
 
@@ -26,23 +24,19 @@ const socket = (io: Server): void => {
         socket.on('count', (): boolean => socket.emit('enter', connectionCount))
 
         socket.on('send mess', async (data): Promise<void> => {
-            const row: QueryResult = await db.query("SELECT * FROM chat")
-            const count: number = Number(row.rowCount)
-            io.sockets.emit('add mess', {mess: data.mess, name: data.name, count: count + 1});
+            const {name, text}: {name: string, text: string} = data
+            io.sockets.emit('add mess', {text, name});
             
-            await db.query(`INSERT INTO chat (name, text) VALUES ($1, $2)`, [data.name, data.mess]);
+            await db.query(`INSERT INTO chat (name, text) VALUES ($1, $2)`, [name, text]);
         });
 
         // anonimeChat
         socket.on('send', async (data): Promise<void> => {
             const {name, guest, text}: {name: string, guest: string, text: string} = data
+
             await db.query(`INSERT INTO anonimeChat (text, name, guest) VALUES ($1, $2, $3)`, [text, name, guest] )
 
-            const query: string = 'SELECT * FROM anonimeChat WHERE name = $1 AND guest = $2 OR name = $3 AND guest = $4';
-
-            const row: QueryResult = await db.query(query, [name, guest, guest, name])
-            const count: number = Number(row.rowCount)
-            io.sockets.emit('give', {text, name, count: count + 1})
+            io.sockets.emit('give', {text, name})
         })
     })
 }

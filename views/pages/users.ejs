@@ -4,7 +4,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Чаты</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../css/chat.css">
 	<link rel="stylesheet" href="../css/style.css">
@@ -86,7 +85,7 @@
 	
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
+        const load = () => {
             const socket = io();
             const usersMain = document.querySelectorAll('.user_div')
             const names = document.querySelectorAll('.user_p')
@@ -101,19 +100,30 @@
                 })
             })
 
-            $(".account_not_log").on("click", function (e) {
+            document.querySelector('.account_not_log').addEventListener('click', (e) => {
                 e.preventDefault()
-                let reg_and_log = $(".reg_and_log")
-                reg_and_log.toggleClass("clicked")
+                const regLog = document.querySelector('.reg_and_log')
+                
+                if (regLog.classList.length === 1) {
+                    regLog.classList.add('clicked')
+                }
+                else {
+                    regLog.classList.remove('clicked')
+                }
             })
-            let users = $(".user_div");
-            if(users.length == 2) {
-            	$(".users").css("cssText", "max-width: 455px !important;")
+
+            const usersWrapper = document.querySelector('.users')
+            const users = document.querySelectorAll('.user_div')
+
+            if(users.length === 2) {
+                usersWrapper.style.cssText = 'max-width: 455px !important;'
             }
-            if(users.length == 1) {
-            	$(".users").css("cssText", "max-width: 240px !important;")
+            if(users.length === 1) {
+                usersWrapper.style.cssText = 'max-width: 240px !important;'
             }
-        })
+        }
+        
+        window.addEventListener('load', load)
     </script>
 </body>
 </html>
