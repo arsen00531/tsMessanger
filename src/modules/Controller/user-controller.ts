@@ -1,9 +1,18 @@
-import { CookieOptions, Request, Response } from "express";
 import path from "path";
+import fs from "fs";
+import { createClient } from "redis";
+import { CookieOptions, Request, Response } from "express";
 import { QueryResult } from "pg";
 import { db } from "../db.js";
 import { url } from "../hostURL.js";
-import fs from "fs";
+
+const client = createClient({
+    url: process.env.REDIS_URL || process.env.LOCAL_REDIS_URL
+})
+
+client.on('error', err => console.log('Redis Client Error', err))
+client.on('connect', () => console.log('connect'))
+client.connect();
 
 export class UserController {
     async main(req: Request, res: Response) {
@@ -33,6 +42,14 @@ export class UserController {
             if (!req.cookies.name) {
                 return res.render(path.join('pages', 'unlogged.ejs'), {error: undefined})
             }
+
+            const redisUsers = await client.get('users')
+            if (redisUsers) {
+                res.render(path.join('pages', 'users.ejs'), {row: JSON.parse(redisUsers), name: req.cookies.name})
+                console.log('cash used')
+                return
+            }
+
             const users: QueryResult = await db.query('SELECT * FROM users WHERE name != $1', [req.cookies.name])
             
             const newUsers = users.rows.map(user => {
@@ -41,6 +58,9 @@ export class UserController {
                 }
                 return user
             })
+
+            await client.set('users', JSON.stringify(newUsers), {EX: 100, NX: true})
+            console.log('CASH SET')
 
             res.render(path.join('pages', 'users.ejs'), {row: newUsers, name: req.cookies.name})
         } catch (error) {

@@ -2,8 +2,8 @@ import 'dotenv/config'
 import express, { Application } from 'express'
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser'
-import { Server } from 'socket.io';
 import ejs from 'ejs'
+import { Server } from 'socket.io';
 import { authRouter } from './modules/Router/authRouter.js'
 import { userRouter } from './modules/Router/user-router.js'
 import { socket } from './modules/soket.js';
