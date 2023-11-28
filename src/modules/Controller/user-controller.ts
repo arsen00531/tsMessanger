@@ -1,12 +1,12 @@
 import path from "path";
 import fs from "fs";
-import { createClient } from "redis";
+import { RedisClientType, createClient } from "redis";
 import { CookieOptions, Request, Response } from "express";
 import { QueryResult } from "pg";
 import { db } from "../db.js";
 import { url } from "../hostURL.js";
 
-const client = createClient({
+const client: RedisClientType = createClient({
     url: process.env.REDIS_URL || process.env.LOCAL_REDIS_URL
 })
 
@@ -45,9 +45,11 @@ export class UserController {
 
             const redisUsers = await client.get('users')
             if (redisUsers) {
-                res.render(path.join('pages', 'users.ejs'), {row: JSON.parse(redisUsers), name: req.cookies.name})
+                res.render(path.join('pages', 'users.ejs'), {
+                    row: JSON.parse(redisUsers), name: req.cookies.name
+                })
                 console.log('cash used')
-                return
+                return JSON.parse(redisUsers)
             }
 
             const users: QueryResult = await db.query('SELECT * FROM users WHERE name != $1', [req.cookies.name])
