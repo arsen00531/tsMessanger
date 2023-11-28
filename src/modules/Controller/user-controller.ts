@@ -43,14 +43,14 @@ export class UserController {
                 return res.render(path.join('pages', 'unlogged.ejs'), {error: undefined})
             }
 
-            const redisUsers = await client.get('users')
-            if (redisUsers) {
-                res.render(path.join('pages', 'users.ejs'), {
-                    row: JSON.parse(redisUsers), name: req.cookies.name
-                })
-                console.log('cash used')
-                return JSON.parse(redisUsers)
-            }
+            // const redisUsers = await client.get('users')
+            // if (redisUsers) {
+            //     res.render(path.join('pages', 'users.ejs'), {
+            //         row: JSON.parse(redisUsers), name: req.cookies.name
+            //     })
+            //     console.log('cash used')
+            //     return JSON.parse(redisUsers)
+            // }
 
             const users: QueryResult = await db.query('SELECT * FROM users WHERE name != $1', [req.cookies.name])
             
@@ -61,7 +61,7 @@ export class UserController {
                 return user
             })
 
-            await client.set('users', JSON.stringify(newUsers), {EX: 100, NX: true})
+            await client.set('users', JSON.stringify(newUsers), {EX: 10, NX: true})
             console.log('CASH SET')
 
             res.render(path.join('pages', 'users.ejs'), {row: newUsers, name: req.cookies.name})
