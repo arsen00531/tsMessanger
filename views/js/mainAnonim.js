@@ -11,8 +11,6 @@ const load = () => {
         htmlName = document.querySelector('.pska2').textContent.replace(/\n/g, '').trim()
     let name = ''
 
-    console.log(url)
-
     cookies.forEach(cookie => {
         if (cookie.split('=')[0] === 'name') name = cookie.split('=')[1]
     })
